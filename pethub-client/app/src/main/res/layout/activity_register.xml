@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/registerRootConstraintLayout"
+    android:background="@color/background_normal"
+    tools:context=".ui.activity.RegisterActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/registerToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_close_cross" />
+
+    <TextView
+        android:id="@+id/registerTitleTextView"
+        style="@style/PrimaryTextViewStyle"
+        android:text="@string/register_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerToolbar" />
+
+    <TextView
+        android:id="@+id/registerTipTextView"
+        style="@style/MinorTextViewStyle"
+        android:text="@string/register_title_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerTitleTextView" />
+
+    <EditText
+        android:id="@+id/registerUsernameEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/register_input_username_hint"
+        app:layout_constraintEnd_toEndOf="@+id/registerPasswordEditText"
+        app:layout_constraintStart_toStartOf="@+id/registerPasswordEditText"
+        app:layout_constraintTop_toBottomOf="@+id/registerTipTextView"
+        android:inputType="text"
+        android:autofillHints="username" />
+
+    <EditText
+        android:id="@+id/registerPasswordEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/register_input_password_hint"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/registerSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/registerSubmitButton"
+        app:layout_constraintTop_toBottomOf="@id/registerUsernameEditText"
+        android:autofillHints="password" />
+
+    <EditText
+        android:id="@+id/registerConfirmEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/register_input_confirm_hint"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/registerSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/registerSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/registerPasswordEditText"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/registerQuestionEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/register_input_question_hint"
+        app:layout_constraintEnd_toEndOf="@+id/registerSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/registerSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/registerConfirmEditText"
+        android:inputType="text"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/registerAnswerEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/register_input_answer_hint"
+        app:layout_constraintEnd_toEndOf="@+id/registerSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/registerSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/registerQuestionEditText"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+
+    <Button
+        android:id="@+id/registerToLoginButton"
+        style="@style/MinorButtonStyle"
+        android:text="@string/register_to_login"
+        app:layout_constraintEnd_toEndOf="@+id/registerSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/registerAnswerEditText" />
+
+    <Button
+        android:id="@+id/registerSubmitButton"
+        style="@style/PrimaryButtonStyle"
+        android:text="@string/register_submit_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerToLoginButton" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

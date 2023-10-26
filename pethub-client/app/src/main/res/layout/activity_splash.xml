@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/splashRootConstraintLayout"
+    android:background="@color/background_normal"
+    tools:context=".ui.activity.SplashActivity">
+    <Button
+        android:id="@+id/splashTouristModeButton"
+        style="@style/MinorButtonStyle"
+        android:text="@string/splash_tourist_mode"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/splashLogoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/splashToLoginButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4"
+        android:text="@string/app_name"
+        android:textColor="@color/primary_text_normal"
+        android:textStyle="bold"
+        android:textSize="60sp" />
+
+    <Button
+        android:id="@+id/splashToLoginButton"
+        style="@style/PrimaryButtonStyle"
+        android:text="@string/splash_to_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <Button
+        android:id="@+id/splashToRegisterButton"
+        style="@style/MinorButtonStyle"
+        android:text="@string/splash_to_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splashToLoginButton" />
+
+    <CheckBox
+        android:id="@+id/splashAgreeAgreementCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/splashToLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/splashToRegisterButton"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/splashAgreementTextView"
+        style="@style/MinorTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:textSize="@dimen/agreement_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/splashAgreeAgreementCheckBox"
+        app:layout_constraintEnd_toEndOf="@+id/splashToLoginButton"
+        app:layout_constraintStart_toEndOf="@+id/splashAgreeAgreementCheckBox"
+        app:layout_constraintTop_toTopOf="@+id/splashAgreeAgreementCheckBox" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

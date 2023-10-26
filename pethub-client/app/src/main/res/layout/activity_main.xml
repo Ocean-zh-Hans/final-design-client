@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="40dp"
+    android:background="@color/background_normal"
+    tools:context=".ui.activity.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/mainNav1Button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mainNav1Button"
+        style="@style/NavButton"
+        android:text="首页"
+        android:textSize="18sp"
+        android:textColor="@color/nav_button_selected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/mainNav2Button"/>
+    <Button
+        android:id="@+id/mainNav2Button"
+        style="@style/NavButton"
+        android:text="功能"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/mainNav1Button"
+        app:layout_constraintRight_toLeftOf="@id/mainNav3Button"/>
+    <Button
+        android:id="@+id/mainNav3Button"
+        style="@style/NavButton"
+        android:text="我"
+        app:layout_constraintLeft_toRightOf="@id/mainNav2Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/homeRootFragment"
+    tools:context=".ui.fragment.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/homeTabLeftImageButton"
+            style="@style/TabButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/homeTab1TextView"/>
+        <TextView
+            android:id="@+id/homeTab1TextView"
+            style="@style/TabButton"
+            android:text="经验"
+            app:layout_constraintLeft_toRightOf="@id/homeTabLeftImageButton"
+            app:layout_constraintRight_toLeftOf="@id/homeTab2TextView"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/homeTab2TextView"
+            style="@style/TabButton"
+            android:text="宠秀"
+            app:layout_constraintLeft_toRightOf="@id/homeTab1TextView"
+            app:layout_constraintRight_toLeftOf="@id/homeTab3TextView"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/homeTab3TextView"
+            style="@style/TabButton"
+            android:text="寻宠"
+            app:layout_constraintLeft_toRightOf="@id/homeTab2TextView"
+            app:layout_constraintRight_toLeftOf="@id/homeTabRightImageButton"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/homeTabRightImageButton"
+            style="@style/TabButton"
+            app:layout_constraintLeft_toRightOf="@id/homeTab3TextView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+        <View
+            android:id="@+id/homeIndicator"
+            android:layout_width="36dp"
+            android:layout_height="3dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/primary_button_normal"
+            app:layout_constraintLeft_toLeftOf="@id/homeTab1TextView"
+            app:layout_constraintRight_toRightOf="@id/homeTab3TextView"
+            app:layout_constraintBottom_toBottomOf="@id/homeTab1TextView" />
+        <View
+            android:id="@+id/homeCutoffRule"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/homeTabLeftImageButton"
+            android:background="@color/cut_off_rule" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/homeViewPager2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/homeTabLeftImageButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

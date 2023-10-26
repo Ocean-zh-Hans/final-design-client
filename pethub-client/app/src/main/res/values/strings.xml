@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">宠语记</string>
+    <string name="splash_to_login">前往登录</string>
+    <string name="splash_to_register"><![CDATA[去注册 >]]></string>
+    <string name="splash_user_agreement">我已阅读并同意《用户协议》《隐私政策》《版权声明》</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_title">用户注册</string>
+    <string name="register_title_hint">用户名是您登录的唯一凭证，请牢记</string>
+    <string name="register_input_username_hint">请输入用户名</string>
+    <string name="register_input_password_hint">输入密码</string>
+    <string name="register_input_confirm_hint">再次输入密码</string>
+    <string name="register_input_question_hint">密保问题</string>
+    <string name="register_input_answer_hint">密保答案</string>
+    <string name="register_to_login">去登录</string>
+    <string name="register_submit_register">立即注册</string>
+    <string name="login_title">用户登录</string>
+    <string name="login_title_hint">登陆成功后无需再次登录</string>
+    <string name="login_input_username_hint">请输入用户名</string>
+    <string name="login_input_password_hint">输入密码</string>
+    <string name="login_to_register">去注册</string>
+    <string name="login_to_reset">忘记密码</string>
+    <string name="login_submit_login">登录</string>
+    <string name="reset_title">找回密码</string>
+    <string name="reset_title_hint">输入用户名以获取密保问题</string>
+    <string name="reset_input_username_hint">请输入用户名</string>
+    <string name="reset_get_question">获取密保问题</string>
+    <string name="reset_input_answer_hint">输入密保答案</string>
+    <string name="reset_input_password_hint">输入密码</string>
+    <string name="reset_input_confirm_hint">再次输入密码</string>
+    <string name="reset_submit_reset">重置密码</string>
+    <string name="splash_tourist_mode">暂不登录</string>
+</resources>

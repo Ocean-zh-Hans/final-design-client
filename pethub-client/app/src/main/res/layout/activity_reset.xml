@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/resetRootConstraintLayout"
+    android:background="@color/background_normal"
+    tools:context=".ui.activity.ResetActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/resetToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_back_left_arrow"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/resetTitleTextView"
+        style="@style/PrimaryTextViewStyle"
+        android:text="@string/reset_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/resetToolbar" />
+
+    <TextView
+        android:id="@+id/resetTipTextView"
+        style="@style/MinorTextViewStyle"
+        android:text="@string/reset_title_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetTitleTextView" />
+
+    <EditText
+        android:id="@+id/resetUsernameEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/reset_input_username_hint"
+        app:layout_constraintEnd_toEndOf="@+id/resetQuestionTextView"
+        app:layout_constraintStart_toStartOf="@+id/resetQuestionTextView"
+        app:layout_constraintTop_toBottomOf="@+id/resetTipTextView"
+        android:autofillHints="username"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/resetGetQuestionButton"
+        style="@style/MinorButtonStyle"
+        android:text="@string/reset_get_question"
+        app:layout_constraintTop_toTopOf="@id/resetUsernameEditText"
+        app:layout_constraintBottom_toBottomOf="@id/resetUsernameEditText"
+        app:layout_constraintRight_toRightOf="@id/resetUsernameEditText" />
+
+    <TextView
+        android:id="@+id/resetQuestionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_normal"
+        android:textSize="24sp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/resetSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/resetSubmitButton"
+        app:layout_constraintTop_toBottomOf="@id/resetUsernameEditText" />
+
+    <EditText
+        android:id="@+id/resetAnswerEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/reset_input_answer_hint"
+        app:layout_constraintEnd_toEndOf="@id/resetSubmitButton"
+        app:layout_constraintStart_toStartOf="@id/resetSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/resetQuestionTextView"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/resetPasswordEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/reset_input_password_hint"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/resetSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/resetSubmitButton"
+        app:layout_constraintTop_toBottomOf="@id/resetAnswerEditText"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/resetConfirmEditText"
+        style="@style/PrimaryEditTextStyle"
+        android:hint="@string/reset_input_confirm_hint"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/resetSubmitButton"
+        app:layout_constraintStart_toStartOf="@+id/resetSubmitButton"
+        app:layout_constraintTop_toBottomOf="@+id/resetPasswordEditText"
+        android:importantForAutofill="no" />
+
+    <Button
+        android:id="@+id/resetSubmitButton"
+        style="@style/PrimaryButtonStyle"
+        android:layout_marginTop="20dp"
+        android:text="@string/reset_submit_reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/resetConfirmEditText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

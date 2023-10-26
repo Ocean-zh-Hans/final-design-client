@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主要按钮的样式 -->
+    <style name="PrimaryButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/primary_button_height</item>
+        <item name="android:background">@drawable/ic_primary_btn_bg_selector</item>
+        <item name="android:textColor">@color/primary_button_text_normal</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="layout_constraintWidth_percent">0.7</item>
+    </style>
+
+    <style name="PrimaryEditTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColorHint">@color/hint_text_normal</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+
+    <!-- 次要按钮的样式-->
+    <style name="MinorButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/link_text_normal</item>
+        <item name="android:letterSpacing">0.05</item>
+    </style>
+
+    <style name="MinorTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:textColor">@color/minor_text_normal</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 关闭（图片）按钮样式 -->
+    <style name="CloseImageButtonStyle">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:src">@drawable/ic_close_cross</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="PrimaryTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.25</item>
+        <item name="android:gravity">center</item>
+        <item name="layout_constraintWidth_percent">0.8</item>
+    </style>
+
+
+
+    <style name="NavButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/nav_button_unselected</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="layout_constraintDimensionRatio">w,1:2.5</item>
+    </style>
+
+    <style name="TabButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/nav_button_unselected</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="layout_constraintDimensionRatio">w,1:2</item>
+    </style>
+
+</resources>

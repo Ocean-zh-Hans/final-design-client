@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="midnight_blue">#FF090A1D</color>
+    <color name="flame_orange">#FFED7B35</color>
+    <color name="goldenrod">#FFF3BB3A</color>
+    <color name="slate_grey">#FF51535F</color>
+    <color name="pure_white">#FFE3E3E3</color>
+
+    <color name="pearl_white">#FFF2F2F2</color>
+    <color name="platinum_grey">#FFE5E5E5</color>
+    <color name="silver_grey">#FFD9D9D9</color>
+
+    <color name="spring_bud">#FFC6E070</color>
+    <color name="olive_green">#FF91C46C</color>
+    <color name="dark_navy">#FF1C344C</color>
+    <color name="deep_teal">#FF287D7D</color>
+
+
+    <color name="colorPrimary">@color/olive_green</color>
+    <color name="colorPrimaryActivated">@color/spring_bud</color>
+    <color name="colorControlNormal">@color/silver_grey</color>
+    <color name="colorControlActivated">@color/olive_green</color>
+    <color name="colorControlDisabled">@color/platinum_grey</color>
+    <color name="statusBarColor">@color/pearl_white</color>
+
+    <color name="background_normal">@color/pearl_white</color>
+    <color name="primary_button_normal">@color/colorPrimary</color>
+    <color name="primary_button_activated">@color/colorPrimaryActivated</color>
+    <color name="primary_button_disabled">@color/colorControlDisabled</color>
+
+    <color name="text_normal">#FF333333</color>
+    <color name="minor_text_normal">#FF8C8C8C</color>
+    <color name="hint_text_normal">#FFCCCCCC</color>
+    <color name="link_text_normal">#FF133667</color>
+    <color name="primary_text_normal">@color/colorPrimary</color>
+    <color name="primary_button_text_normal">#FFFFFFFF</color>
+    <color name="primary_button_text_disabled">#FF333333</color>
+
+    <color name="nav_button_unselected">#FF8C8C8C</color>
+    <color name="nav_button_selected">@color/text_normal</color>
+
+    <color name="cut_off_rule">#FFE6E6E6</color>
+    <color name="bar_dark">#FF0F1A25</color>
+
+    <color name="me_status_bg">#FF0F1A25</color>
+
+<!--    <color name="colorPrimary">#FFFF2442</color>-->
+<!--    <color name="colorControlNormal">#FFE6E6E6</color>-->
+<!--    <color name="colorControlActivated">#FFFF2442</color>-->
+<!--    <color name="statusBarColor">#FFFFFFFF</color>-->
+
+<!--    <color name="background_default">#FFFFFFFF</color>-->
+<!--    <color name="primary_bg">#FFFF2442</color>-->
+<!--    <color name="primary_bg_light">#FFFF7C8E</color>-->
+<!--    <color name="primary_text">#FF333333</color>-->
+<!--    <color name="primary_text_in_dark">#FFFFFFFF</color>-->
+<!--    <color name="link_text">#FF133667</color>-->
+<!--    <color name="minor_text">#FFADADAD</color>-->
+<!--    <color name="hint_text">#FFCCCCCC</color>-->
+
+<!--    <color name="nav_button_unselected">#FF8C8C8C</color>-->
+<!--    <color name="nav_button_selected">@color/primary_text</color>-->
+
+<!--    <color name="cut_off_rule">#FFE6E6E6</color>-->
+<!--    <color name="bar_dark">#FF0F1A25</color>-->
+
+<!--    <color name="me_status_bg">#FF0F1A25</color>-->
+
+</resources>

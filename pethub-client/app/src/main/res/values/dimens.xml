@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="system_navbar_height">36dp</dimen>
+    <dimen name="primary_button_height">46dp</dimen>
+    <dimen name="primary_button_radius">23dp</dimen>
+
+
+    <dimen name="agreement_text_size">10sp</dimen>
+
+</resources>
