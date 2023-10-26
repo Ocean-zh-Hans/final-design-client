@@ -48,7 +48,9 @@ public class HttpClientUtil {
                 throw new IOException("Unexpected code" + response);
             }
 
-            resultString = response.body().string().toString();
+            if (response.body() != null) {
+                resultString = response.body().string();
+            }
             System.out.println(resultString);
             return resultString;
         } catch (SocketTimeoutException e) {
@@ -59,7 +61,9 @@ public class HttpClientUtil {
             resultString = new ServerResponse(500, "发生未知错误").toString();
         }  finally {
             if (response != null) {
-                response.body().close();
+                if (response.body() != null) {
+                    response.body().close();
+                }
             }
         }
         return resultString;

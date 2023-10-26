@@ -95,6 +95,7 @@
         style="@style/PrimaryButtonStyle"
         android:layout_marginTop="20dp"
         android:text="@string/reset_submit_reset"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/resetConfirmEditText" />

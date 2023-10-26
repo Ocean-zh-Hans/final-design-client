@@ -23,6 +23,7 @@ import com.example.vo.ServerResponse;
 import com.example.vo.UserAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tencent.mmkv.MMKV;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button toRegisterButton;
     private Button toResetButton;
     private Button submitButton;
-    private Handler mSubHandler; // 子线程的Handler对象，用于处理子线程的消息
+    private Handler mSubHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,60 @@ public class LoginActivity extends AppCompatActivity {
         initView();
         clickListen();
         openThread();
-        }
+    }
 
+    /**
+     * 开启一个子线程处理网络请求
+     */
+    private void openThread() {
+        // UI 线程业务逻辑
+        Handler mUIHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                ServerResponse<UserAccount> response = (ServerResponse<UserAccount>) msg.obj;
+
+                // 响应码为 0 代表登录成功
+                if (response.getStatus() == 0) {  // 登录成功
+                    // 保持登录状态
+                    MMKV.initialize(LoginActivity.this);
+                    MMKV kv = MMKV.defaultMMKV();
+                    kv.putBoolean("isTourist", false);
+                    kv.putBoolean("isLogin", true);
+                    kv.encode("account", response.getData());
+                    // 进入主页
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                    LoginActivity.this.finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        // 子线程业务逻辑
+        class SubCallback implements Handler.Callback {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                Map<String, Object> params = (Map<String, Object>) msg.obj;
+                // 调用 okHttp 工具发送请求并获取响应
+                String result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/login.do", params);
+                // 将响应结果发送给 UI 线程
+                Message message = mUIHandler.obtainMessage();
+                Gson gson = new Gson();
+                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<UserAccount>>(){}.getType());;
+                message.sendToTarget();
+                return false;
+            }
+        }
+        // 创建一个并启动子线程对象
+        HandlerThread loginThread = new HandlerThread("LoginThread");
+        loginThread.start();
+        mSubHandler = new Handler(loginThread.getLooper(), new SubCallback());
+    }
+
+    /**
+     * 表单本地验证
+     */
     private void verifier() {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
@@ -60,74 +113,35 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Message message = mSubHandler.obtainMessage(); // 创建新的消息对象
+        // 传输表单信息给子线程
+        Message message = mSubHandler.obtainMessage();
         message.obj = new HashMap<String, Object>(){{
             put("username", username);
             put("password", password);
         }};
-        message.sendToTarget(); // 发送消息给子线程进行处理
+        message.sendToTarget();
     }
 
-    private void openThread() {
-        Handler mUIHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                String result = (String) msg.obj;
-                Gson gson = new Gson();
-                ServerResponse<UserAccount> response = gson.fromJson(result, new TypeToken<ServerResponse<UserAccount>>(){}.getType());
-
-                int status = response.getStatus();
-                if (status == 0) {  // 登录成功
-                    SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(LoginActivity.this);
-                    util.putBoolean("isLogin", true);
-                    util.putBoolean("isTourist", false);
-                    util.putString("account", response.getData().toString());
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(intent);
-
-                } else {
-                    Toast.makeText(LoginActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        class SubCallback implements Handler.Callback {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-                Map<String, Object> params = (Map<String, Object>) msg.obj;
-                String result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/login.do", params);
-                Message message = mUIHandler.obtainMessage(); // 创建新的消息对象
-                message.obj = result;
-                message.sendToTarget(); // 发送消息给UI线程进行处理
-                return false;
-            }
-        }
-
-        HandlerThread loginThread = new HandlerThread("LoginThread"); // 创建一个HandlerThread对象
-        loginThread.start(); // 启动子线程
-        mSubHandler = new Handler(loginThread.getLooper(), new SubCallback()); // 创建子线程的Handler对象
-    }
-
-
+    /**
+     * 监听点击事件
+     */
     private void clickListen() {
-        // 监听用户点击返回按钮
         toolbar.setNavigationOnClickListener(view -> finish());
-        // 监听用户点击去注册按钮
         toRegisterButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
             finish();
         });
-        // 监听用户点击重置密码按钮
         toResetButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, ResetActivity.class);
             startActivity(intent);
         });
-        // 监听用户点击提交登录按钮
         submitButton.setOnClickListener(view -> verifier());
     }
 
+    /**
+     * 初始化控件
+     */
     private void initView() {
         toolbar = findViewById(R.id.loginToolbar);
         usernameEditText = findViewById(R.id.loginUsernameEditText);

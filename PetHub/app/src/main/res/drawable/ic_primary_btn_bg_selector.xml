@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 按钮按下时的状态 -->
     <item android:state_pressed="true">
         <shape>
@@ -8,6 +8,15 @@
             <corners android:radius="@dimen/primary_button_radius" />
         </shape>
     </item>
+
+    <item android:state_enabled="false">
+        <shape>
+            <!-- 按钮一般状态的颜色 -->
+            <solid android:color="@color/primary_button_disabled" />
+            <corners android:radius="@dimen/primary_button_radius" />
+        </shape>
+    </item>
+
     <!-- 按钮一般的状态 -->
     <item>
         <shape>
@@ -16,4 +25,6 @@
             <corners android:radius="@dimen/primary_button_radius" />
         </shape>
     </item>
+
+
 </selector>

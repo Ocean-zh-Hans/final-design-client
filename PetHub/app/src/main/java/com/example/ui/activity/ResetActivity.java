@@ -38,8 +38,7 @@ public class ResetActivity extends AppCompatActivity {
     private Button getQuestionButton;
     private Button submitButton;
     private TextView questionTextView;
-    private Handler mSubHandler; // 子线程的Handler对象，用于处理子线程的消息
-    private String requestUsername;
+    private Handler mSubHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,38 +50,94 @@ public class ResetActivity extends AppCompatActivity {
         openThread();
     }
 
+    /**
+     * 开启一个子线程处理网络请求
+     */
+    private void openThread() {
+        // UI 线程业务逻辑
+        Handler mUIHandler = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                ServerResponse<Object> response = (ServerResponse<Object>) msg.obj;
+                System.out.println(response.toString());
+                if (1 == msg.what) {
+                    //获取到密保
+                    if (response.getStatus() == 0) {
+                        questionTextView.setText(response.getMsg());
+                    } else {
+                        Toast.makeText(ResetActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (2 == msg.what) {
+                    // 密码重置成功
+                    if (response.getStatus() == 0) {
+                        Toast.makeText(ResetActivity.this, "密码修改成功", Toast.LENGTH_SHORT).show();
+                        ResetActivity.this.finish();
+                    } else {
+                        Toast.makeText(ResetActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
+        // 子线程业务逻辑
+        class SubCallback implements Handler.Callback {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                Map<String, Object> params = (Map<String, Object>) msg.obj;
+                Message message = mUIHandler.obtainMessage();
+                String result = "";
+                if (1 == msg.what) {
+                    // msg.what = 1 获取密保问题请求
+                    result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/reset.prep", params);
+                    message.what = 1;
+                } else if (2 == msg.what) {
+                    // msg.what = 2 获取重置密码请求
+                    result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/reset.do", params);
+                    message.what = 2;
+                }
+                // 将响应结果发送给 UI 线程
+                Gson gson = new Gson();
+                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<Object>>() {
+                }.getType());;
+                message.sendToTarget();
+                return false;
+            }
+        }
+        // 创建一个并启动子线程对象
+        HandlerThread loginThread = new HandlerThread("LoginThread");
+        loginThread.start();
+        mSubHandler = new Handler(loginThread.getLooper(), new SubCallback());
+    }
 
+    /**
+     * 获取问题
+     */
     private void inquire() {
+        // 获取用户名
         String username = usernameEditText.getText().toString();
-        requestUsername = username;
+        submitButton.setEnabled(true);
+        // 非空验证
         if (username.isBlank()) {
             Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        Message message = mSubHandler.obtainMessage(); // 创建新的消息对象
-        message.what = 0;
+        // 创建一个并启动子线程对象
+        Message message = mSubHandler.obtainMessage();
+        message.what = 1;
         message.obj = new HashMap<String, Object>(){{
             put("username", username);
         }};
-        message.sendToTarget(); // 发送消息给子线程进行处理
+        message.sendToTarget();
     }
 
+    /**
+     * 表单本地验证
+     */
     private void verifier() {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String confirm = confirmEditText.getText().toString();
         String question = questionTextView.getText().toString();
         String answer = answerEditText.getText().toString();
-
-        if (username.isBlank()) {
-            Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!username.equals(requestUsername)) {
-            Toast.makeText(this, "用户名发生变化，请重新获取密保问题", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (question.isBlank()) {
             Toast.makeText(this, "请先获取密保问题", Toast.LENGTH_SHORT).show();
@@ -102,9 +157,9 @@ public class ResetActivity extends AppCompatActivity {
             Toast.makeText(this, "两次输入的密码不一致", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Message message = mSubHandler.obtainMessage(); // 创建新的消息对象
-        message.what = 1;
+        // 创建一个并启动子线程对象
+        Message message = mSubHandler.obtainMessage();
+        message.what = 2;
         message.obj = new HashMap<String, Object>(){{
             put("username", username);
             put("password", password);
@@ -112,69 +167,23 @@ public class ResetActivity extends AppCompatActivity {
             put("question", question);
             put("answer", answer);
         }};
-        message.sendToTarget(); // 发送消息给子线程进行处理
-    }
-
-    private void openThread() {
-        Handler mUIHandler = new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(Message msg) {
-                String result = (String) msg.obj;
-                Gson gson = new Gson();
-
-                if (0 == msg.what) {
-                    ServerResponse response = gson.fromJson(result, new TypeToken<ServerResponse>(){}.getType());
-                    System.out.println(msg);
-                    int status = response.getStatus();
-                    if (status == 0) {  // 获取到密保
-                        questionTextView.setText(response.getMsg());
-                    } else {
-                        Toast.makeText(ResetActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-                } else if (1 == msg.what) {
-                    ServerResponse response = gson.fromJson(result, new TypeToken<ServerResponse>() {
-                    }.getType());
-                    int status = response.getStatus();
-                    if (status == 0) {  // 重置密码
-                        Toast.makeText(ResetActivity.this, "密码修改成功", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(ResetActivity.this, LoginActivity.class);
-                        ResetActivity.this.startActivity(intent);
-                        ResetActivity.this.finish();
-                    } else {
-                        Toast.makeText(ResetActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        };
-
-        class SubCallback implements Handler.Callback {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-                Map<String, Object> params = (Map<String, Object>) msg.obj;
-                Message message = mUIHandler.obtainMessage(); // 创建新的消息对象
-                String result = "";
-                if (0 == msg.what) {
-                    result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/reset.prep", params);
-                    message.what = 0;
-                } else if (1 == msg.what) {
-                    result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/reset.do", params);
-                    message.what = 1;
-                }
-                message.obj = result;
-                message.sendToTarget(); // 发送消息给UI线程进行处理
-                return false;
-            }
-        }
-
-        HandlerThread loginThread = new HandlerThread("LoginThread"); // 创建一个HandlerThread对象
-        loginThread.start(); // 启动子线程
-        mSubHandler = new Handler(loginThread.getLooper(), new SubCallback()); // 创建子线程的Handler对象
+        message.sendToTarget();
     }
 
     private void clickListen() {
         toolbar.setNavigationOnClickListener(view -> finish());
         getQuestionButton.setOnClickListener(view -> inquire());
         submitButton.setOnClickListener(view -> verifier());
+        usernameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {
+                submitButton.setEnabled(false);
+            }
+        });
     }
 
     private void initView() {

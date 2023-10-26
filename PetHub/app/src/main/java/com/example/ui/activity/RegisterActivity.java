@@ -40,49 +40,57 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        // 设置控件的内边距为状态栏和导航栏的高度
         SystemUIUtil.setAllPadding(findViewById(R.id.registerRootConstraintLayout));
         initView();
         openThread();
         clickListen();
     }
 
+    /**
+     * 开启一个子线程处理网络请求
+     */
     private void openThread() {
         Handler mUIHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                String result = (String) msg.obj;
-                Gson gson = new Gson();
-                ServerResponse serverResponse = gson.fromJson(result, new TypeToken<ServerResponse>() {}.getType());
-                int status = serverResponse.getStatus();
-                if (status == 0) {  // 注册成功
+                ServerResponse<Object> response = (ServerResponse<Object>) msg.obj;
+                // 状态码为 0 代表注册成功
+                if (response.getStatus() == 0) {
                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                    // 跳转登录界面
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+                    RegisterActivity.this.startActivity(intent);
+                    RegisterActivity.this.finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, serverResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
         };
 
+        // 子线程业务逻辑
         class SubCallback implements Handler.Callback {
             @Override
             public boolean handleMessage(@NonNull Message msg) {
                 Map<String, Object> params = (Map<String, Object>) msg.obj;
+                // 调用 okHttp 工具发送请求并获取响应
                 String result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/register.do", params);
-                Message message = mUIHandler.obtainMessage(); // 创建新的消息对象
-                message.obj = result;
+                // 将响应结果发送给 UI 线程
+                Message message = mUIHandler.obtainMessage();
+                Gson gson = new Gson();
+                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<Object>>() {}.getType());;
                 message.sendToTarget();
                 return false;
             }
         }
-
+        // 创建一个并启动子线程对象
         HandlerThread registerThread = new HandlerThread("RegisterThread");
         registerThread.start();
         mSubHandler = new Handler(registerThread.getLooper(), new SubCallback());
     }
 
+    /**
+     * 表单本地验证
+     */
     private void verifier() {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
@@ -111,7 +119,8 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        Message message = mSubHandler.obtainMessage(); // 创建新的消息对象
+        // 传输表单信息给子线程
+        Message message = mSubHandler.obtainMessage();
         message.obj = new HashMap<String, Object>(){{
             put("username", username);
             put("password", password);
@@ -122,21 +131,25 @@ public class RegisterActivity extends AppCompatActivity {
         message.sendToTarget();
     }
 
-    private void toLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
+    /**
+     * 监听点击事件
+     */
     private void clickListen() {
         // 监听用户点击返回按钮
         toolbar.setNavigationOnClickListener(view -> finish());
         // 监听用户点击去登录按钮
-        toLoginButton.setOnClickListener(view -> toLogin());
+        toLoginButton.setOnClickListener(view -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
         // 监听用户点击提交注册按钮
         submitButton.setOnClickListener(view -> verifier());
     }
 
+    /**
+     * 初始化控件
+     */
     private void initView() {
         toolbar = findViewById(R.id.registerToolbar);
         usernameEditText = findViewById(R.id.registerUsernameEditText);
