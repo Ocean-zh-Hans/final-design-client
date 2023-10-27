@@ -17,7 +17,7 @@ import com.example.R;
 import com.example.ui.fragment.MeFragment;
 import com.example.ui.fragment.FuncFragment;
 import com.example.ui.fragment.HomeFragment;
-import com.example.utils.SharedPreferencesUtil;
+import com.tencent.mmkv.MMKV;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
         // 底部导航栏按钮3的点击事件处理
         nav3Button.setOnClickListener(view -> {
-            SharedPreferencesUtil util = SharedPreferencesUtil.getInstance(this);
-            if (util.readBoolean("isTourist")) { // 如果是游客模式，则跳转到登录界面
+            MMKV.initialize(MainActivity.this);
+            MMKV kv = MMKV.defaultMMKV();
+            if (kv.getBoolean("isTourist", false)) { // 如果是游客模式，则跳转到登录界面
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
             } else { // 否则获取 MeFragment 实例并切换 Fragment

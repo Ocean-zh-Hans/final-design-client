@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.R;
 import com.example.constants.UrlConsts;
 import com.example.utils.HttpClientUtil;
-import com.example.utils.SharedPreferencesUtil;
 import com.example.utils.SystemUIUtil;
 import com.example.vo.ServerResponse;
 import com.example.vo.UserAccount;
@@ -83,11 +82,12 @@ public class LoginActivity extends AppCompatActivity {
             public boolean handleMessage(@NonNull Message msg) {
                 Map<String, Object> params = (Map<String, Object>) msg.obj;
                 // 调用 okHttp 工具发送请求并获取响应
-                String result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/login.do", params);
+                String result = HttpClientUtil.doPost(UrlConsts.ADDRESS, "user/login.do", params);
                 // 将响应结果发送给 UI 线程
                 Message message = mUIHandler.obtainMessage();
                 Gson gson = new Gson();
-                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<UserAccount>>(){}.getType());;
+                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<UserAccount>>() {
+                }.getType());
                 message.sendToTarget();
                 return false;
             }
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         // 传输表单信息给子线程
         Message message = mSubHandler.obtainMessage();
-        message.obj = new HashMap<String, Object>(){{
+        message.obj = new HashMap<String, Object>() {{
             put("username", username);
             put("password", password);
         }};

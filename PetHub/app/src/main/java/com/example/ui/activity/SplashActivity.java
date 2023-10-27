@@ -31,7 +31,6 @@ import com.example.utils.SystemUIUtil;
 import com.example.vo.ServerResponse;
 import com.example.vo.UserAccount;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tencent.mmkv.MMKV;
 
 import java.util.HashMap;
@@ -88,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
         Handler mUIHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                ServerResponse<Object> response = (ServerResponse<Object>) msg.obj;
+                ServerResponse<?> response = (ServerResponse<?>) msg.obj;
                 // 状态码为 0 代表验证成功
                 if (response.getStatus() == 0) {
                     // 跳转主界面
@@ -120,8 +119,7 @@ public class SplashActivity extends AppCompatActivity {
                 // 将响应结果发送给 UI 线程
                 Message message = mUIHandler.obtainMessage();
                 Gson gson = new Gson();
-                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<Object>>() {
-                }.getType());
+                message.obj = gson.fromJson(result, ServerResponse.class);
                 message.sendToTarget();
                 return false;
             }

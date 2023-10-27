@@ -40,7 +40,7 @@ public class HttpClientUtil {
                     .url(stringBuffer.toString())
                     .get()
                     .build();
-            System.out.println(request);
+            System.out.println("请求Url: " + request);
 
             response = httpClient.newCall(request).execute();
 
@@ -51,7 +51,7 @@ public class HttpClientUtil {
             if (response.body() != null) {
                 resultString = response.body().string();
             }
-            System.out.println(resultString);
+            System.out.println("响应体: " + resultString);
             return resultString;
         } catch (SocketTimeoutException e) {
             resultString = new ServerResponse(501, "网络请求超时，请检查网络连接").toString();
@@ -83,8 +83,7 @@ public class HttpClientUtil {
             stringBuffer.append(path);
             FormBody.Builder body = new FormBody.Builder();
             for (Map.Entry<String, Object> entry : mapParams.entrySet()) {
-                body = new FormBody.Builder()
-                        .add(entry.getKey(), entry.getValue().toString());
+                body.add(entry.getKey(), entry.getValue().toString());
             }
 
             Request request = new Request.Builder()
@@ -92,13 +91,15 @@ public class HttpClientUtil {
                     .post(body.build())
                     .build();
 
+            System.out.println("请求Url: " + request);
+
             response = httpClient.newCall(request).execute();
 
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code" + response);
             }
-
             resultString = response.body().string();
+            System.out.println("响应体: " + resultString);
             return resultString;
         } catch (SocketTimeoutException e) {
             resultString = new ServerResponse(501, "网络请求超时，请检查网络连接").toString();

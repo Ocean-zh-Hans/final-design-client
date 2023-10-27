@@ -1,6 +1,8 @@
 package com.example.vo;
 
 
+import androidx.annotation.NonNull;
+
 /**
  * 封装前端返回的统一实体类
  * @param <T>
@@ -42,9 +44,10 @@ public class ServerResponse<T> {
         this.msg = msg;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "{" +
+        return "ServerResponse{" +
                 "status=" + status +
                 ", data=" + data +
                 ", msg='" + msg + '\'' +

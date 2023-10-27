@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -14,7 +13,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +22,6 @@ import com.example.utils.HttpClientUtil;
 import com.example.utils.SystemUIUtil;
 import com.example.vo.ServerResponse;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +55,7 @@ public class ResetActivity extends AppCompatActivity {
         Handler mUIHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                ServerResponse<Object> response = (ServerResponse<Object>) msg.obj;
+                ServerResponse<?> response = (ServerResponse<?>) msg.obj;
                 System.out.println(response.toString());
                 if (1 == msg.what) {
                     //获取到密保
@@ -91,13 +88,12 @@ public class ResetActivity extends AppCompatActivity {
                     message.what = 1;
                 } else if (2 == msg.what) {
                     // msg.what = 2 获取重置密码请求
-                    result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/reset.do", params);
+                    result = HttpClientUtil.doPost(UrlConsts.ADDRESS, "user/reset.do", params);
                     message.what = 2;
                 }
                 // 将响应结果发送给 UI 线程
                 Gson gson = new Gson();
-                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<Object>>() {
-                }.getType());;
+                message.obj = gson.fromJson(result, ServerResponse.class);
                 message.sendToTarget();
                 return false;
             }
@@ -123,7 +119,7 @@ public class ResetActivity extends AppCompatActivity {
         // 创建一个并启动子线程对象
         Message message = mSubHandler.obtainMessage();
         message.what = 1;
-        message.obj = new HashMap<String, Object>(){{
+        message.obj = new HashMap<String, Object>() {{
             put("username", username);
         }};
         message.sendToTarget();
@@ -160,7 +156,7 @@ public class ResetActivity extends AppCompatActivity {
         // 创建一个并启动子线程对象
         Message message = mSubHandler.obtainMessage();
         message.what = 2;
-        message.obj = new HashMap<String, Object>(){{
+        message.obj = new HashMap<String, Object>() {{
             put("username", username);
             put("password", password);
             put("confirm", confirm);
@@ -176,9 +172,13 @@ public class ResetActivity extends AppCompatActivity {
         submitButton.setOnClickListener(view -> verifier());
         usernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
             @Override
             public void afterTextChanged(Editable editable) {
                 submitButton.setEnabled(false);
@@ -196,8 +196,9 @@ public class ResetActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.resetSubmitButton);
         questionTextView = findViewById(R.id.resetQuestionTextView);
     }
-
-//
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSubHandler.getLooper().quit();
+    }
 }

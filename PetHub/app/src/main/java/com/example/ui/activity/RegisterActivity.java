@@ -20,7 +20,6 @@ import com.example.utils.HttpClientUtil;
 import com.example.utils.SystemUIUtil;
 import com.example.vo.ServerResponse;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         Handler mUIHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                ServerResponse<Object> response = (ServerResponse<Object>) msg.obj;
+                ServerResponse<?> response = (ServerResponse<?>) msg.obj;
                 // 状态码为 0 代表注册成功
                 if (response.getStatus() == 0) {
                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
@@ -73,11 +72,11 @@ public class RegisterActivity extends AppCompatActivity {
             public boolean handleMessage(@NonNull Message msg) {
                 Map<String, Object> params = (Map<String, Object>) msg.obj;
                 // 调用 okHttp 工具发送请求并获取响应
-                String result = HttpClientUtil.doGet(UrlConsts.ADDRESS, "user/register.do", params);
+                String result = HttpClientUtil.doPost(UrlConsts.ADDRESS, "user/register.do", params);
                 // 将响应结果发送给 UI 线程
                 Message message = mUIHandler.obtainMessage();
                 Gson gson = new Gson();
-                message.obj = gson.fromJson(result, new TypeToken<ServerResponse<Object>>() {}.getType());;
+                message.obj = gson.fromJson(result, ServerResponse.class);;
                 message.sendToTarget();
                 return false;
             }
